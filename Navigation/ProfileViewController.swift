@@ -9,19 +9,25 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
+    private lazy var header: ProfileHeaderView = ProfileHeaderView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .lightGray
+        view.addSubview(header)
+        navigationController?.navigationBar.backgroundColor = .white
+        title = "Profile" 
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        header.frame = CGRect(
+            x: view.frame.minX + view.safeAreaInsets.left,
+            y: view.frame.minY + view.safeAreaInsets.top,
+            width: view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right,
+            height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+        )
     }
-    */
-
 }
