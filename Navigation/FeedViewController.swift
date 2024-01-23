@@ -18,7 +18,7 @@ class FeedViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @objc func clickButton() {
-        let post = Post(title: "Заголовок")
+        let post = Post.make().first
         let postController = PostViewController()
         postController.post = post
         navigationController?.pushViewController(postController, animated: true)
