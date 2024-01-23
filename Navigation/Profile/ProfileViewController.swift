@@ -9,28 +9,19 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private lazy var header: ProfileHeaderView = {
-        let view = ProfileHeaderView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = true
-        return view
-    }()
-    
-    private lazy var statusButton: UIButton = {
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = true
-        view.backgroundColor = .systemBlue
-        view.setTitle("Button", for: .normal)
-        view.layer.cornerRadius = 4
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOffset = .init(width: 4, height: 4)
-        view.layer.shadowOpacity = 0.7
-        view.layer.shadowRadius = 4
-        view.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        return view
-    }()
-    
+	private lazy var tableView: UITableView = {
+		let tableView = UITableView.init(
+			frame: .zero,
+			style: .grouped
+		)
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+		
+		return tableView
+	}()
+	private lazy var headerView = ProfileHeaderView()
+    private let posts = Post.make()
+	private let cellReuseIdentifier = "PostTableViewCell"
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
@@ -38,34 +29,64 @@ class ProfileViewController: UIViewController {
         setups()
     }
 }
-
+extension ProfileViewController: UITableViewDelegate {
+    
+}
+extension ProfileViewController: UITableViewDataSource {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(
+			withIdentifier: cellReuseIdentifier,
+			for: indexPath
+		) as? PostTableViewCell
+		guard let postCell = cell else {
+			fatalError("could not dequeueReusableCell")
+		}
+		postCell.configuration(post: posts[indexPath.row])
+		return postCell
+	}
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        posts.count
+    }
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		headerView
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		UITableView.automaticDimension
+	}
+	
+}
 private extension ProfileViewController {
     
     func setups() {
         view.backgroundColor = .lightGray
         navigationController?.navigationBar.backgroundColor = .white
         title = "Profile"
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44
+		tableView.allowsSelection = false
+		tableView.register(
+			PostTableViewCell.self,
+			forCellReuseIdentifier: cellReuseIdentifier
+		)
+		tableView.reloadData()
     }
     
     func addSubviews() {
-        view.addSubview(header)
-        view.addSubview(statusButton)
+        view.addSubview(tableView)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            header.heightAnchor.constraint(equalToConstant: 220),
-            
-            statusButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            statusButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            statusButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-    
-    @objc func buttonPressed() {
-        title = "Press"
     }
 }

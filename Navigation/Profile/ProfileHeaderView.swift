@@ -110,6 +110,7 @@ private extension ProfileHeaderView {
             statusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             statusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant:  -16),
             statusButton.heightAnchor.constraint(equalToConstant: 50),
+			statusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             
             textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -50),
             textField.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 16),
