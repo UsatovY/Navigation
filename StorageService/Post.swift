@@ -7,18 +7,18 @@
 
 import UIKit
 
-struct Post{
-    let author: String
-    let description: String
-    let image: String
-    let likes: Int
-    let views: Int
-    let title: String
+public struct Post{
+   public let author: String
+   public let description: String
+   public let image: String
+   public let likes: Int
+   public let views: Int
+   public let title: String
 }
 
-extension Post {
+public extension Post {
     
-    static func make() -> [Post] {
+	static func make() -> [Post] {
         [
             Post(author: "Dzen",
                  description: "Toyota обновила модель, которой почти 40 лет",

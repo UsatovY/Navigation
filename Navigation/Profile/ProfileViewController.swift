@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StorageService
 
 class ProfileViewController: UIViewController {
     
@@ -44,7 +45,7 @@ extension ProfileViewController: UITableViewDataSource {
 		postCell.configuration(post: posts[indexPath.row])
 		return postCell
 	}
-    
+	
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         posts.count
     }
@@ -61,7 +62,11 @@ extension ProfileViewController: UITableViewDataSource {
 private extension ProfileViewController {
     
     func setups() {
-        view.backgroundColor = .lightGray
+		#if DEBUG
+        view.backgroundColor = .blue
+		#else
+		view.backgroundColor = .brown
+		#endif
         navigationController?.navigationBar.backgroundColor = .white
         title = "Profile"
 		tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +84,12 @@ private extension ProfileViewController {
     
     func addSubviews() {
         view.addSubview(tableView)
+		
+		#if DEBUG
+		view.backgroundColor = .blue
+		#else
+		view.backgroundColor = .brown
+		#endif
     }
     
     func setupConstraints() {
