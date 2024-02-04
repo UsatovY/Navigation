@@ -39,22 +39,29 @@ final class LoginViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.autocapitalizationType = .none
         textField.backgroundColor = .systemGray6
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.cornerRadius = 10
-        textField.layer.borderWidth = 0.5
-        textField.layer.masksToBounds = true
         return textField
     }()
+	private let loginPasswordStackView: UIStackView = {
+		let stackView = UIStackView()
+		stackView.layer.cornerRadius = 10
+		stackView.layer.masksToBounds = true
+		stackView.layer.borderColor = UIColor.lightGray.cgColor
+		stackView.layer.borderWidth = 0.5
+		stackView.axis = .vertical
+		return stackView
+	}()
+	private let spliterTextField: UIView = {
+		let spliter = UIView()
+		spliter.backgroundColor = .lightGray
+		return spliter
+	}()
     private let passwordTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Password"
         textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
         textField.backgroundColor = .systemGray6
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.cornerRadius = 10
-        textField.layer.borderWidth = 0.5
-        textField.layer.masksToBounds = true
+        
         return textField
     }()
     private let loginButton: UIButton = {
@@ -66,8 +73,8 @@ final class LoginViewController: UIViewController {
         button.setBackgroundImage(UIImage(named: "blue_pixel")?.alpha(0.8), for: .selected)
         button.setBackgroundImage(UIImage(named: "blue_pixel")?.alpha(0.8), for: .highlighted)
         button.setBackgroundImage(UIImage(named: "blue_pixel")?.alpha(0.8), for: .disabled)
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
+		button.layer.cornerRadius = 10
+		button.layer.masksToBounds = true
         return button
     }()
     
@@ -122,12 +129,14 @@ private extension LoginViewController {
     func setupConstraints() {
         view.addSubview(scrollView)
         contentView.addSubview(logoImageView)
-        contentView.addSubview(emailTextField)
-        contentView.addSubview(passwordTextField)
+        contentView.addSubview(loginPasswordStackView)
         contentView.addSubview(loginButton)
         scrollView.addSubview(contentView)
+		loginPasswordStackView.addArrangedSubview(emailTextField)
+		loginPasswordStackView.addArrangedSubview(spliterTextField)
+		loginPasswordStackView.addArrangedSubview(passwordTextField)
         
-        [logoImageView, emailTextField, passwordTextField, loginButton, scrollView, contentView].forEach {
+        [logoImageView, emailTextField, passwordTextField, loginButton, scrollView, contentView, loginPasswordStackView, spliterTextField].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -147,20 +156,20 @@ private extension LoginViewController {
             logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
             logoImageView.widthAnchor.constraint(equalToConstant: 100),
             logoImageView.heightAnchor.constraint(equalToConstant: 100),
-            
-            emailTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            emailTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            emailTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
+			
+			loginPasswordStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+			loginPasswordStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+			loginPasswordStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
+			
+			spliterTextField.heightAnchor.constraint(equalToConstant: 0.5),
+			
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
 
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
 
             loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
+            loginButton.topAnchor.constraint(equalTo: loginPasswordStackView.bottomAnchor, constant: 16),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])

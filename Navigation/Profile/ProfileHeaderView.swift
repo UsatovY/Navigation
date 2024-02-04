@@ -54,6 +54,7 @@ class ProfileHeaderView: UIView {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
+		view.placeholder = "Set your status..."
         view.backgroundColor = .white
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.black.cgColor
